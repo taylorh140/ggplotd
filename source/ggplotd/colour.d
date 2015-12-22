@@ -3,7 +3,25 @@ module ggplotd.colour;
 import std.range : ElementType;
 import std.typecons : Tuple;
 
-import cairo.cairo : RGBA;
+public struct RGBA //Basically grabed from Cairo.d 
+{
+    ///
+    public this(double red, double green, double blue, double alpha)
+    {
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.alpha = alpha;
+    }
+    ///
+    public double red, green, blue, alpha;
+
+    ///convert RGBA struct to RGB struct. Alpha is discarded
+    public RGB opCast(RGB)()
+    {
+        return RGB(red, green, blue);
+    }
+}
 
 //import std.experimental.color.conv;
 //import std.experimental.color.rgb;
@@ -90,10 +108,6 @@ struct ColourID
             id[2] = setId;
           else
           {
-              import cairo.cairo : RGB;
-              static if (is(T==RGB))
-                id[2] = RGBA(setId.red, setId.green, setId.blue, 1);
-              else
                 id[1] = setId.to!string;
           }
     }
